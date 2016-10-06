@@ -1,9 +1,10 @@
 #include <iostream>
-#include "../common/sampler.h"
+#include "../samplers/sampler.h"
 #include "../common/random.h"
 #include "../materials/material.h"
-#include "pathTracer.h"
 #include "../io/console.h"
+
+#include "pathTracer.h"
 
 #undef max
 
@@ -38,7 +39,7 @@ vec3 pathTracer::li(const ray& r, int depth)
     {
         vec3 dir = normalize(r.direction);
         float t = 0.5f * (dir.y + 1.0f);
-        return (1.0f - t) * vec3(1.0f, 1.0f, 1.0f) + t * vec3(0.5f, 0.7f, 1.0f);
+        return (1.0f - t) * vec3(1.0f) + t * vec3(0.5f, 0.7f, 1.0f);
     }
 }
 
@@ -67,7 +68,7 @@ void pathTracer::run(const pathTracerRunInfo& info, pixelWriter* pixelWriter)
             {
                 float u = (x + random::next()) * iwidth;
                 float v = (y + random::next()) * iheight;
-                const ray r = _camera->castRay(vec2(u, v));
+                const ray r = _camera->castRay(vec2(u, v), 0.0);
                 color += li(r, 0);
             }
             color *= issp;

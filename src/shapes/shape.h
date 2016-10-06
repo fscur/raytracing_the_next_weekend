@@ -1,5 +1,4 @@
 #pragma once
-#include <glm/glm.hpp>
 #include "../math/ray.h"
 #include "../math/intersection.h"
 

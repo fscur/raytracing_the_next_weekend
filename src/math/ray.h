@@ -1,7 +1,3 @@
-//
-// Created by Filipe on 01/10/2016.
-//
-
 #pragma once
 #include "../common/types.h"
 
@@ -11,17 +7,19 @@ public:
     ray()
     {}
 
-    ray(const glm::vec3& origin, const glm::vec3& direction):
+    ray(const vec3& origin, const vec3& direction, float time):
         origin(origin),
-        direction(direction)
+        direction(direction),
+        time(time)
     {
     }
 
-    glm::vec3 pointAtParameter(float t) const
+    vec3 pointAtParameter(float t) const
     {
         return origin + t * direction;
     }
 
-    glm::vec3 origin;
-    glm::vec3 direction;
+    vec3 origin;
+    vec3 direction;
+    float time;
 };

@@ -48,10 +48,10 @@ void screen::initCamera()
     vec3 from(12.0f, 2.0f, 6.0f);
     vec3 at(0.0f, 0.5f, 0.0f);
     float focusDistance = length(from - at);
-    float aperture = 0.5f;
+    float aperture = 0.2f;
     float fov = 20.0f * (glm::pi<float>() / 180.0f);
 
-    _camera = new camera(fov, ASPECT, aperture, focusDistance);
+    _camera = new camera(fov, ASPECT, aperture, focusDistance, 1.0);
     _camera->lookAt(from, at, vec3(0.0f, 1.0f, 0.0f));
 }
 

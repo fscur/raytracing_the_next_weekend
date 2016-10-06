@@ -1,5 +1,6 @@
 #include "../common/random.h"
 #include "../shapes/sphere.h"
+#include "../shapes/movingSphere.h"
 #include "../materials/lambertian.h"
 #include "../materials/metal.h"
 #include "../materials/dielectric.h"
@@ -28,7 +29,16 @@ scene* scene::createRandomScene(camera* camera)
                         random::next() * random::next(),
                         random::next() * random::next());
 
-                    world->addShape(new sphere(center, 0.2f, new lambertian(color)));
+                    //world->addShape(new sphere(center, 0.2f, new lambertian(color)));
+                    world->addShape(
+                        new movingSphere(
+                            center, 
+                            center + vec3(0.0f, random::next() * 0.5f, 0.0),
+                            0.0, 
+                            1.0,
+                            0.2f, 
+                            new lambertian(color),
+                            {}));
 
                 }
                 else if (choose_mat < 0.85)

@@ -1,9 +1,5 @@
-//
-// Created by Filipe on 03/10/2016.
-//
-
 #include "sampler.h"
-#include "random.h"
+#include "../common/random.h"
 
 vec3 sampler::randomPositionInUnitSphere()
 {

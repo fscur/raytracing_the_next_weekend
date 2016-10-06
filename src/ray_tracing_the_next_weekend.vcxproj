@@ -33,12 +33,13 @@
     <ClCompile Include="materials\metal.cpp" />
     <ClCompile Include="pathTracing\pathTracer.cpp" />
     <ClCompile Include="scene\camera.cpp" />
-    <ClCompile Include="common\sampler.cpp" />
+    <ClCompile Include="samplers\sampler.cpp" />
     <ClCompile Include="drawing\bitmap_win64.cpp" />
     <ClCompile Include="scene\scene.cpp" />
     <ClCompile Include="io\path.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="screen.cpp" />
+    <ClCompile Include="shapes\movingSphere.cpp" />
     <ClCompile Include="shapes\sphere.cpp" />
     <ClCompile Include="time\stopwatch.cpp" />
     <ClCompile Include="time\time.cpp" />
@@ -72,10 +73,11 @@
     <ClInclude Include="math\intersection.h" />
     <ClInclude Include="common\random.h" />
     <ClInclude Include="math\ray.h" />
-    <ClInclude Include="common\sampler.h" />
+    <ClInclude Include="samplers\sampler.h" />
     <ClInclude Include="common\types.h" />
     <ClInclude Include="math\vmath.h" />
     <ClInclude Include="drawing\bitmap.h" />
+    <ClInclude Include="shapes\movingSphere.h" />
     <ClInclude Include="shapes\shape.h" />
     <ClInclude Include="scene\scene.h" />
     <ClInclude Include="io\path.h" />

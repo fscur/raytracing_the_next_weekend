@@ -38,11 +38,11 @@ bool dielectric::scatter(const ray& r, const intersection& hit, vec3& attenuatio
 
     if (random::next() < reflectionProbability)
     {
-        scattered = ray(hit.point, reflected);
+        scattered = ray(hit.point, reflected, r.time);
     }
     else
     {
-        scattered = ray(hit.point, refracted);
+        scattered = ray(hit.point, refracted, r.time);
     }
 
     return true;
