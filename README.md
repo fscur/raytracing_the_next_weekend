@@ -1,12 +1,11 @@
-#Ray Tracing In One Weekend
+#Ray Tracing The Next Weekend
 
-![Raytracing In One Weekend Image](https://github.com/fscur/RayTracingInOneWeekend/blob/master/RaytracingInOneWeekend.png)
+![Ray Tracing In One Weekend Image](https://github.com/fscur/RayTracingInOneWeekend/blob/master/RaytracingInOneWeekend.png)
 
-This is my implementation of the book [Raytracing In One Weekend](https://www.amazon.com/Ray-Tracing-Weekend-Minibooks-Book-ebook/dp/B01B5AODD8/ref=sr_1_1?s=books&ie=UTF8&qid=1475630764&sr=1-1&keywords=raytracing+in+one+weekend) by Peter Shirley.
+This is my implementation of the book [Ray Tracing The Next Weekend](https://www.amazon.com/Ray-Tracing-Next-Week-Minibooks-ebook/dp/B01CO7PQ8C/ref=pd_sim_351_1?ie=UTF8&pd_rd_i=B01CO7PQ8C&pd_rd_r=EM9SM4K9SW7WECNSBAPA&pd_rd_w=Cv40C&pd_rd_wg=8myTP&psc=1&refRID=EM9SM4K9SW7WECNSBAPA) by Peter Shirley.
 
 Links:
-* Executable [Download](https://drive.google.com/open?id=0BxTXLaHJXzEMdHBKUl8xN1B0a1U)
-* [In a Weekend blog](http://in1weekend.blogspot.com.br/2016/01/ray-tracing-in-one-weekend.html)
+* [In a Weekend blog](http://in1weekend.blogspot.com.br/2016/01/ray-tracing-second-weekend.html)
 
 Controls:
 * Up:     double ssp.
