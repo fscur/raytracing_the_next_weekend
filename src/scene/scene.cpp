@@ -29,16 +29,32 @@ scene* scene::createRandomScene(camera* camera)
                         random::next() * random::next(),
                         random::next() * random::next());
 
-                    //world->addShape(new sphere(center, 0.2f, new lambertian(color)));
+                    std::function<vec3(float)> movementFunc;
+                    if (random::next() < 0.75)
+                    {
+                        movementFunc = [=](float t)
+                        {
+                            auto c0 = center;
+                            auto c1 = center + vec3(0.0f, random::next() * 0.5f, 0.0f);
+                            auto t0 = 0.0f;
+                            auto t1 = 1.0f;
+
+                            return c0 + ((t - t0) / (t1 - t0)) * (c1 - c0);
+                        };
+                    }
+                    else
+                    {
+                        movementFunc = [=](float t)
+                        {
+                            return center + vec3(cos(t), 0.2f, sin(t));
+                        };
+                    }
+
                     world->addShape(
                         new movingSphere(
-                            center, 
-                            center + vec3(0.0f, random::next() * 0.5f, 0.0),
-                            0.0, 
-                            1.0,
                             0.2f, 
                             new lambertian(color),
-                            {}));
+                            movementFunc));
 
                 }
                 else if (choose_mat < 0.85)
