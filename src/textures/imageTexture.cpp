@@ -3,7 +3,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "../stb/stb_image.h"
 
-imageTexture::imageTexture(std::string fileName)
+imageTexture::imageTexture(std::string fileName, const vec2& scale):
+    _scale(scale)
 {
     int comp;
     stbi_set_flip_vertically_on_load(true);
@@ -12,8 +13,11 @@ imageTexture::imageTexture(std::string fileName)
 
 inline vec3 imageTexture::fetch(const vec2 & uv, const vec3 point) const
 {
-    int i = uv.x * _width;
-    int j = uv.y * _height - 0.001;
+    int i = uv.x * _width * _scale.x;
+    int j = uv.y * _height * _scale.y - 0.001;
+
+    i = i % _width;
+    j = j % _height;
 
     if (i < 0)
         i = 0;

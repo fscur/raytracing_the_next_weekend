@@ -29,17 +29,19 @@ vec3 pathTracer::li(const ray& r, int depth)
     {
         ray scattered;
         vec3 attenuation;
-
+        vec3 emitted = hit.material->emitted(hit.uv, hit.point);
         if (depth < 5 && hit.material->scatter(r, hit, attenuation, scattered))
-            return attenuation *li(scattered, depth + 1);
+            return emitted + attenuation *li(scattered, depth + 1);
         else
-            return vec3(0.0f);
+            return emitted;
     }
     else
     {
-        vec3 dir = normalize(r.direction);
-        float t = 0.5f * (dir.y + 1.0f);
-        return (1.0f - t) * vec3(1.0f) + t * vec3(0.2f, 0.5f, 0.7f);
+        //vec3 dir = normalize(r.direction);
+        //float t = 0.5f * (dir.y + 1.0f);
+        //return (1.0f - t) * vec3(1.0f) + t * vec3(0.2f, 0.5f, 0.7f);
+
+        return vec3(0, 1.0f, 5.0f) / 255.999f;
     }
 }
 

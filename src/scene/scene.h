@@ -13,6 +13,7 @@ public:
     static scene* scene2();
     static scene* scene3();
     static scene* earthScene();
+    static scene* quadLightScene();
 
 public:
     scene(camera* camera);

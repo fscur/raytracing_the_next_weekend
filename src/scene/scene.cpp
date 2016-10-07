@@ -4,12 +4,13 @@
 #include "../materials/lambertian.h"
 #include "../materials/metal.h"
 #include "../materials/dielectric.h"
+#include "../materials/emissive.h"
 #include "../textures/solidColor.h" 
 #include "../textures/checker.h"
 #include "../textures/noise.h"
 #include "../textures/marble.h"
 #include "../textures/imageTexture.h"
-
+#include "../shapes/quad.h"
 #include "scene.h"
 
 scene* scene::scene1()
@@ -184,8 +185,8 @@ scene* scene::scene3()
 
 scene* scene::earthScene()
 {
-    vec3 eye(0.0f, 0.8f, 0.8f);
-    vec3 at(0.0f, 1.0, 0.0f);
+    vec3 eye(0.0f, 0.5f, 2.0f);
+    vec3 at(0.0f, 1.2, 0.0f);
     float focusDistance = length(eye - at);
     float aperture = 0.0f;
     float fov = 40.0f * (glm::pi<float>() / 180.0f);
@@ -196,8 +197,39 @@ scene* scene::earthScene()
     scene* world = new scene(cam);
 
     auto earthTexture = new imageTexture("earthmap.jpg");
-    auto position = vec3(+0.0f, 0.0f, 0.0f);
-    world->addShape(new sphere(position, 1.0f, new lambertian(earthTexture)));
+    auto earthPosition = vec3(0.0f, 0.0f, 0.0f);
+    world->addShape(new sphere(earthPosition, 1.0f, new lambertian(earthTexture)));
+
+    auto moonTexture = new imageTexture("moonmap.png");
+    auto moonPosition = vec3(1.9f, 4.2f, -8.0f);
+    world->addShape(new sphere(moonPosition, 0.15f, new emissive(moonTexture, 1.0f)));
+
+    world->buildBvh();
+
+    return world;
+}
+
+scene* scene::quadLightScene()
+{
+    vec3 eye(12.0f, 5.0f, 4.0f);
+    vec3 at(0.0f, 0.0, 0.0f);
+    float focusDistance = length(eye - at);
+    float aperture = 0.0f;
+    float fov = 40.0f * (glm::pi<float>() / 180.0f);
+
+    auto cam = new camera(fov, 1.7778f, aperture, focusDistance, 1.0);
+    cam->lookAt(eye, at, vec3(0.0f, 1.0f, 0.0f));
+
+    scene* world = new scene(cam);
+    world->addShape(
+        new sphere(
+            vec3(+0.0f, -1000.f, 0.0f),
+            1000.0f,
+            new lambertian(new solidColor(vec3(0.5f, 0.5f, 0.5f)))));
+
+    world->addShape(new sphere(vec3(+3.0f, 1.0f, +3.0f), 1.0f, new lambertian(solidColor::red)));
+    world->addShape(new xy_quad(0, 4, 0, 4, 0, new emissive(solidColor::white, 1.0f)));
+    world->addShape(new sphere(vec3(0.0f, 1.0f, +3.0f), 1.0f, new emissive(solidColor::blue, 1.0f)));
 
     world->buildBvh();
 

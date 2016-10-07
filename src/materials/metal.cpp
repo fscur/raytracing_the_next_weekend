@@ -14,6 +14,6 @@ bool metal::scatter(const ray& r, const intersection& hit, vec3& attenuation, ra
 {
     vec3 reflectionDirection = vMath::reflect(normalize(r.direction), hit.normal);
     scattered = ray(hit.point, reflectionDirection + _roughness * sampler::randomPositionInUnitSphere(), r.time);
-    attenuation = _albedo->fetch(vec2(), hit.point);
+    attenuation = _albedo->fetch(hit.uv, hit.point);
     return dot(scattered.direction, hit.normal) > 0.0f;
 }

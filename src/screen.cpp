@@ -45,7 +45,7 @@ void screen::initInput()
 
 void screen::initScene()
 {
-    _scene = scene::earthScene();
+    _scene = scene::quadLightScene();
 }
 
 void screen::initPathTracer()

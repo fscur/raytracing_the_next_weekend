@@ -30,6 +30,7 @@
     <ClCompile Include="io\ppmWriter.cpp" />
     <ClCompile Include="io\textWriter.cpp" />
     <ClCompile Include="materials\dielectric.cpp" />
+    <ClCompile Include="materials\emissive.cpp" />
     <ClCompile Include="materials\lambertian.cpp" />
     <ClCompile Include="materials\metal.cpp" />
     <ClCompile Include="math\perlin.cpp" />
@@ -69,6 +70,7 @@
     <ClInclude Include="io\ppmWriter.h" />
     <ClInclude Include="io\textWriter.h" />
     <ClInclude Include="materials\dielectric.h" />
+    <ClInclude Include="materials\emissive.h" />
     <ClInclude Include="materials\lambertian.h" />
     <ClInclude Include="materials\material.h" />
     <ClInclude Include="materials\metal.h" />
@@ -85,6 +87,7 @@
     <ClInclude Include="math\vmath.h" />
     <ClInclude Include="drawing\bitmap.h" />
     <ClInclude Include="shapes\movingSphere.h" />
+    <ClInclude Include="shapes\quad.h" />
     <ClInclude Include="shapes\shape.h" />
     <ClInclude Include="scene\scene.h" />
     <ClInclude Include="io\path.h" />
