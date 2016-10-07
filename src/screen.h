@@ -42,7 +42,8 @@ private:
     const uint MAX_SSP;
     const uint MIN_WIDTH;
     const uint MAX_WIDTH;
-    const uint TILE_SIZE;
+    const uint TILE_WIDTH;
+    const uint TILE_HEIGHT;
 
     bool _processing;
     uint _resultWidth;

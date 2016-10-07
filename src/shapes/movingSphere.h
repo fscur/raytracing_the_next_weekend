@@ -9,19 +9,21 @@ class movingSphere :
 {
 public:
     movingSphere(
+        vec3 center,
         float radius,
+        float speed,
         material* material,
-        std::function<vec3(float)> movementFunction);
+        std::function<vec3(vec3, float, float)> movementFunction);
 
     virtual bool hit(const ray& ray, float tMin, float tMax, intersection& hit) const override;
+    virtual bool createBoundingBox(float t0, float t1, aabb& aabb) const override;
 
 private:
-    //vec3 getCenter(float time) const;
-
-private:
+    vec3 _center;
+    float _speed;
     float _radius;
     material* _material;
-    std::function<vec3(float)> _movementFunction;
+    std::function<vec3(vec3, float, float)> _movementFunction;
 };
 
 

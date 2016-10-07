@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="accelerators\bvh.cpp" />
     <ClCompile Include="app\application.cpp" />
     <ClCompile Include="app\guid.cpp" />
     <ClCompile Include="app\guid_win64.cpp" />
@@ -45,6 +46,7 @@
     <ClCompile Include="time\time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="accelerators\bvh.h" />
     <ClInclude Include="app\application.h" />
     <ClInclude Include="io\bitmapWriter.h" />
     <ClInclude Include="io\console.h" />
@@ -67,6 +69,7 @@
     <ClInclude Include="materials\lambertian.h" />
     <ClInclude Include="materials\material.h" />
     <ClInclude Include="materials\metal.h" />
+    <ClInclude Include="math\aabb.h" />
     <ClInclude Include="math\rectangle.h" />
     <ClInclude Include="pathTracing\pathTracer.h" />
     <ClInclude Include="scene\camera.h" />

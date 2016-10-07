@@ -13,7 +13,8 @@ screen::screen(std::wstring name, uint width, uint height) :
     MAX_SSP(4096),
     MIN_WIDTH(200),
     MAX_WIDTH(800),
-    TILE_SIZE(32),
+    TILE_WIDTH(32),
+    TILE_HEIGHT(32),
     _processing(false),
     _resultWidth(width),
     _resultHeight(uint(float(MAX_WIDTH) / ASPECT)),
@@ -45,14 +46,14 @@ void screen::initInput()
 
 void screen::initCamera()
 {
-    vec3 from(3.0f, 9.0f, 15.0f);
+    vec3 eye(12.0f, 2.0f, 6.0f);
     vec3 at(0.0f, 0.5f, 0.0f);
-    float focusDistance = length(from - at);
-    float aperture = 0.2f;
+    float focusDistance = length(eye - at);
+    float aperture = 0.5f;
     float fov = 20.0f * (glm::pi<float>() / 180.0f);
 
-    _camera = new camera(fov, ASPECT, aperture, focusDistance, 2.0);
-    _camera->lookAt(from, at, vec3(0.0f, 1.0f, 0.0f));
+    _camera = new camera(fov, ASPECT, aperture, focusDistance, 1.0);
+    _camera->lookAt(eye, at, vec3(0.0f, 1.0f, 0.0f));
 }
 
 void screen::initScene()
@@ -109,6 +110,42 @@ void screen::onKeyUp(keyboardEventArgs* args)
 
 void screen::launchPathTracer()
 {
+    /*auto test = "[" +
+        std::to_string(_resultWidth) + " x " +
+        std::to_string(_resultHeight) + " x " +
+        std::to_string(_currentSsp) + " spp]";
+
+    stopwatch::measure([&]
+    {
+        _processing = true;
+
+        auto pixelWriter = new bitmapWriter(_resultWidth, _resultHeight);
+
+        pathTracerRunInfo info;
+        info.tile.x = 0;
+        info.tile.y = 0;
+        info.tile.w = _resultWidth;
+        info.tile.h = _resultHeight;
+        info.width = _resultWidth;
+        info.height = _resultHeight;
+        info.ssp = _currentSsp;
+
+        _pathTracer->run(info, pixelWriter);
+
+        auto bmp = new bitmap(_resultWidth, _resultHeight, pixelWriter->getData());
+
+        bmp->stretchBlit(
+            getDC(),
+            rectangle<int>(0, 0, _resultWidth, _resultHeight),
+            rectangle<int>(0, 0, _width, _height));
+
+        delete bmp;
+        delete pixelWriter;
+
+        _processing = false;
+    }, test);*/
+
+    
     auto task = std::thread([&]
     {
         auto test = "[" +
@@ -120,8 +157,11 @@ void screen::launchPathTracer()
         {
             _processing = true;
 
-            auto horizontalTilesCount = _resultWidth / TILE_SIZE;
-            auto verticalTilesCount = _resultHeight / TILE_SIZE;
+            auto tileWidth = TILE_WIDTH;
+            auto tileHeight = TILE_HEIGHT;
+
+            auto horizontalTilesCount = _resultWidth / tileWidth;
+            auto verticalTilesCount = _resultHeight / tileHeight;
 
             auto pixelWriter = new bitmapWriter(_resultWidth, _resultHeight);
 
@@ -130,10 +170,10 @@ void screen::launchPathTracer()
             auto traceTiles = [&](int i, int j)
             {
                 pathTracerRunInfo info;
-                info.tile.x = i * TILE_SIZE;
-                info.tile.y = j * TILE_SIZE;
-                info.tile.w = TILE_SIZE;
-                info.tile.h = TILE_SIZE;
+                info.tile.x = i * tileWidth;
+                info.tile.y = j * tileHeight;
+                info.tile.w = tileWidth;
+                info.tile.h = tileHeight;
                 info.width = _resultWidth;
                 info.height = _resultHeight;
                 info.ssp = _currentSsp;
@@ -163,6 +203,7 @@ void screen::launchPathTracer()
 
             _processing = false;
         }, test);
+        
     });
 
     task.detach();

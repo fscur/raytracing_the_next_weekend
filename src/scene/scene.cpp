@@ -9,60 +9,59 @@
 scene* scene::createRandomScene(camera* camera)
 {
     scene* world = new scene(camera);
+    world->addShape(new sphere(vec3(+0.0f, -1000.f, 0.0f), 1000.0f, new lambertian(vec3(0.5f, 0.5f, 0.5f))));
 
-    world->addShape(new sphere(vec3(0, -1000, 0), 1000, new lambertian(vec3(0.5, 0.5, 0.5))));
+    int w = 3;
 
-    for (int a = -3; a < 3; a++)
+    for (int a = -w; a < w; a++)
     {
-        for (int b = -3; b < 3; b++)
+        for (int b = -w; b < w; b++)
         {
             float choose_mat = random::next();
 
-            vec3 center(a + 0.9 * random::next(), 0.2, b + 0.9 * random::next());
+            vec3 center(a + 0.9f * random::next(), 0.2f, b + 0.9f * random::next());
 
-            if ((center - vec3(4, 0.2, 0)).length() > 0.5)
+            if ((center - vec3(4.0f, 0.2f, 0.0f)).length() > 0.5f)
             {
-                if (choose_mat < 0.7)
-                {  // diffuse
+                if (choose_mat < 0.3)
+                {
                     auto color = vec3(
                         random::next() * random::next(),
                         random::next() * random::next(),
                         random::next() * random::next());
 
-                    std::function<vec3(float)> movementFunc;
-                    if (random::next() < 0.75)
-                    {
-                        movementFunc = [=](float t)
-                        {
-                            auto c0 = center;
-                            auto c1 = center + vec3(0.0f, random::next() * 0.5f, 0.0f);
-                            auto t0 = 0.0f;
-                            auto t1 = 1.0f;
+                    std::function<vec3(vec3, float, float)> movementFunc;
 
-                            return c0 + ((t - t0) / (t1 - t0)) * (c1 - c0);
-                        };
-                    }
-                    else
+                    movementFunc = [=](vec3 p0, float t, float speed)
                     {
-                        movementFunc = [=](float t)
-                        {
-                            return center + vec3(cos(t), 0.2f, sin(t));
-                        };
-                    }
+                        auto p1 = p0 + vec3(0.0f, random::next() * 0.5f, 0.0f);
+                        return p0 + (t / speed) * (p1 - p0);
+                    };
 
                     world->addShape(
                         new movingSphere(
-                            0.2f, 
+                            center,
+                            0.2f,
+                            1.0f,
                             new lambertian(color),
                             movementFunc));
+                }
+                else if (choose_mat < 0.7)
+                {
+                    auto color = vec3(
+                        random::next() * random::next(),
+                        random::next() * random::next(),
+                        random::next() * random::next());
+
+                    world->addShape(new sphere(center, 0.2f, new lambertian(color)));
 
                 }
                 else if (choose_mat < 0.85)
-                { // metal
+                {
                     auto color = vec3(
-                        0.5 * (1 + random::next()),
-                        0.5 * (1 + random::next()),
-                        0.5 * (1 + random::next()));
+                        0.5f * (1.0f + random::next()),
+                        0.5f * (1.0f + random::next()),
+                        0.5f * (1.0f + random::next()));
 
                     world->addShape(new sphere(center, 0.2f, new metal(color, 0.5f * random::next())));
                 }
@@ -78,6 +77,25 @@ scene* scene::createRandomScene(camera* camera)
     world->addShape(new sphere(vec3(0, 1, 0), 1.0, new dielectric(1.5)));
     world->addShape(new sphere(vec3(4, 1, 0), 1.0, new lambertian(vec3(0.4, 0.2, 0.1))));
 
+    /*int w = 100;
+
+    for (int i = -w; i < w; ++i)
+    {
+        for (int j = -w; j < w; ++j)
+        {
+            vec3 center(i + 1.0f * random::next(), 0.2, j + 1.0 * random::next());
+            world->addShape(new sphere(center, 0.2f, new lambertian(vec3(random::next(), random::next(), random::next()))));
+        }
+    }*/
+
+   /* world->addShape(new sphere(vec3(+0.0f, -1000.f, 0.0f), 1000.0f, new lambertian(vec3(0.5f, 0.5f, 0.5f))));
+    world->addShape(new sphere(vec3(-3.0f, 1.0f, -3.0f), 1.0f, new metal(vec3(0.5f, 0.4f, 0.7f), 0.0f)));
+    world->addShape(new sphere(vec3(-3.0f, 1.0f, +3.0f), 1.0f, new dielectric(1.5f)));
+    world->addShape(new sphere(vec3(+3.0f, 1.0f, -3.0f), 1.0f, new dielectric(1.5f)));
+    world->addShape(new sphere(vec3(+3.0f, 1.0f, +3.0f), 1.0f, new lambertian(vec3(0.9f, 0.1f, 0.0f))));
+*/
+    world->buildBvh();
+
     return world;
 }
 
@@ -88,7 +106,7 @@ scene::scene(camera* camera) :
 
 bool scene::hit(const ray& ray, float tMin, float tMax, intersection& hit) const
 {
-    intersection tempRecord;
+    /*intersection tempRecord;
     bool hitAnything = false;
     double closestHit = tMax;
     auto listCount = _shapes.size();
@@ -103,10 +121,17 @@ bool scene::hit(const ray& ray, float tMin, float tMax, intersection& hit) const
         }
     }
 
-    return hitAnything;
+    return hitAnything;*/
+
+    return _bvh.hit(ray, tMin, tMax, hit);
 }
 
 void scene::addShape(shape* shape)
 {
     _shapes.push_back(shape);
+}
+
+void scene::buildBvh()
+{
+    _bvh = bvh(_shapes, 0.0f, 1.0f);
 }
