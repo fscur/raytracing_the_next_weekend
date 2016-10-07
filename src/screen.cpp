@@ -24,7 +24,11 @@ screen::screen(std::wstring name, uint width, uint height) :
 
 screen::~screen()
 {
-    delete _scene;
+    delete _scene0;
+    delete _scene1;
+    delete _scene2;
+    delete _scene3;
+    delete _scene4;
     delete _camera;
     delete _pathTracer;
 }
@@ -45,12 +49,16 @@ void screen::initInput()
 
 void screen::initScene()
 {
-    _scene = scene::quadLightScene();
+    _scene0 = scene::scene1();
+    _scene1 = scene::scene2();
+    _scene2 = scene::scene3();
+    _scene3 = scene::earthScene();
+    _scene4 = scene::quadLightScene();
 }
 
 void screen::initPathTracer()
 {
-    _pathTracer = new pathTracer(_scene);
+    _pathTracer = new pathTracer(_scene0);
 }
 
 void screen::onKeyUp(keyboardEventArgs* args)
@@ -77,6 +85,21 @@ void screen::onKeyUp(keyboardEventArgs* args)
         case PHIK_RIGHT:
             doubleResolution();
             updateTitle();
+            break;
+        case PHIK_1:
+            _pathTracer->setScene(_scene0);
+            break;
+        case PHIK_2:
+            _pathTracer->setScene(_scene1);
+            break;
+        case PHIK_3:
+            _pathTracer->setScene(_scene2);
+            break;
+        case PHIK_4:
+            _pathTracer->setScene(_scene3);
+            break;
+        case PHIK_5:
+            _pathTracer->setScene(_scene4);
             break;
         default:
             break;

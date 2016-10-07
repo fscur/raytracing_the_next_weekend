@@ -20,6 +20,12 @@ pathTracer::~pathTracer()
 {
 }
 
+void pathTracer::setScene(scene* scene)
+{
+    _scene = scene;
+    _camera = scene->getCamera();
+}
+
 vec3 pathTracer::li(const ray& r, int depth)
 {
     intersection hit;

@@ -50,6 +50,12 @@ private:
     uint _currentSsp;
 
     camera* _camera;
-    scene* _scene;
+    
+    scene* _scene0;
+    scene* _scene1;
+    scene* _scene2;
+    scene* _scene3;
+    scene* _scene4;
+
     pathTracer* _pathTracer;
 };

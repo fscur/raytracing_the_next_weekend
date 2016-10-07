@@ -19,7 +19,7 @@ class pathTracer
 public:
     pathTracer(scene* scene);
     ~pathTracer();
-
+    void setScene(scene* scene);
     void run(const pathTracerRunInfo& info, pixelWriter* pixelWriter);
     void cancel();
 

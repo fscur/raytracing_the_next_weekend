@@ -202,7 +202,7 @@ scene* scene::earthScene()
 
     auto moonTexture = new imageTexture("moonmap.png");
     auto moonPosition = vec3(1.9f, 4.2f, -8.0f);
-    world->addShape(new sphere(moonPosition, 0.15f, new emissive(moonTexture, 1.0f)));
+    world->addShape(new sphere(moonPosition, 0.15f, new emissive(moonTexture, 10.0f)));
 
     world->buildBvh();
 
