@@ -1,5 +1,16 @@
 #include <iostream>
 #include "bitmap.h"
+#include "../stb/stb_image.h"
+
+bitmap* bitmap::load(std::string fileName)
+{
+    int width;
+    int height;
+    int comp;
+
+    byte* data = stbi_load(fileName.c_str(), &width, &height, &comp, 0);
+    return new bitmap(width, height, data);
+}
 
 bitmap::bitmap(uint width, uint height) :
     width(width),

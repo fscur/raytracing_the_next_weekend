@@ -9,9 +9,10 @@
 class scene
 {
 public:
-    static scene* scene1(camera* camera);
-    static scene* scene2(camera* camera);
-    static scene* scene3(camera* camera);
+    static scene* scene1();
+    static scene* scene2();
+    static scene* scene3();
+    static scene* earthScene();
 
 public:
     scene(camera* camera);

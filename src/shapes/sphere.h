@@ -13,6 +13,9 @@ public:
     virtual bool createBoundingBox(float t0, float t1, aabb& aabb) const override;
 
 private:
+    vec2 getUv(const vec3& point) const;
+
+private:
     vec3 _center;
     float _radius;
     material* _material;

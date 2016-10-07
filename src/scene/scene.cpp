@@ -8,12 +8,22 @@
 #include "../textures/checker.h"
 #include "../textures/noise.h"
 #include "../textures/marble.h"
+#include "../textures/imageTexture.h"
 
 #include "scene.h"
 
-scene* scene::scene1(camera* camera)
+scene* scene::scene1()
 {
-    scene* world = new scene(camera);
+    vec3 eye(12.0f, 2.0f, 6.0f);
+    vec3 at(0.0f, 0.0, 0.0f);
+    float focusDistance = length(eye - at);
+    float aperture = 0.0f;
+    float fov = 20.0f * (glm::pi<float>() / 180.0f);
+
+    auto cam = new camera(fov, 1.7778f, aperture, focusDistance, 1.0);
+    cam->lookAt(eye, at, vec3(0.0f, 1.0f, 0.0f));
+
+    scene* world = new scene(cam);
     world->addShape(
         new sphere(
             vec3(+0.0f, -1000.f, 0.0f),
@@ -108,9 +118,18 @@ scene* scene::scene1(camera* camera)
     return world;
 }
 
-scene* scene::scene2(camera* camera)
+scene* scene::scene2()
 {
-    scene* world = new scene(camera);
+    vec3 eye(12.0f, 2.0f, 6.0f);
+    vec3 at(0.0f, 0.0, 0.0f);
+    float focusDistance = length(eye - at);
+    float aperture = 0.0f;
+    float fov = 20.0f * (glm::pi<float>() / 180.0f);
+
+    auto cam = new camera(fov, 1.7778f, aperture, focusDistance, 1.0);
+    cam->lookAt(eye, at, vec3(0.0f, 1.0f, 0.0f));
+
+    scene* world = new scene(cam);
 
     auto checkerTexture = new checker(solidColor::white, solidColor::black);
     auto noiseTexture = new noise(vec3(5.0f));
@@ -141,13 +160,44 @@ scene* scene::scene2(camera* camera)
     return world;
 }
 
-scene* scene::scene3(camera* camera)
+scene* scene::scene3()
 {
-    scene* world = new scene(camera);
+    vec3 eye(12.0f, 2.0f, 6.0f);
+    vec3 at(0.0f, 0.0, 0.0f);
+    float focusDistance = length(eye - at);
+    float aperture = 0.0f;
+    float fov = 20.0f * (glm::pi<float>() / 180.0f);
+
+    auto cam = new camera(fov, 1.7778f, aperture, focusDistance, 1.0);
+    cam->lookAt(eye, at, vec3(0.0f, 1.0f, 0.0f));
+
+    scene* world = new scene(cam);
 
     auto checkerTexture = new checker(solidColor::white, solidColor::red);
     world->addShape(new sphere(vec3(0.0f, -10.0f, 0.0f), 10.0f, new metal(new solidColor(vec3(0.2, 0.5, 0.3)), 0.05f)));
     world->addShape(new sphere(vec3(0.0f, 10.0f, 0.0f), 10.0f, new lambertian(checkerTexture)));
+
+    world->buildBvh();
+
+    return world;
+}
+
+scene* scene::earthScene()
+{
+    vec3 eye(0.0f, 0.8f, 0.8f);
+    vec3 at(0.0f, 1.0, 0.0f);
+    float focusDistance = length(eye - at);
+    float aperture = 0.0f;
+    float fov = 40.0f * (glm::pi<float>() / 180.0f);
+
+    auto cam = new camera(fov, 1.7778f, aperture, focusDistance, 1.0);
+    cam->lookAt(eye, at, vec3(0.0f, 1.0f, 0.0f));
+
+    scene* world = new scene(cam);
+
+    auto earthTexture = new imageTexture("earthmap.jpg");
+    auto position = vec3(+0.0f, 0.0f, 0.0f);
+    world->addShape(new sphere(position, 1.0f, new lambertian(earthTexture)));
 
     world->buildBvh();
 
@@ -161,22 +211,25 @@ scene::scene(camera* camera) :
 
 bool scene::hit(const ray& ray, float tMin, float tMax, intersection& hit) const
 {
-    /*intersection tempRecord;
-    bool hitAnything = false;
-    double closestHit = tMax;
-    auto listCount = _shapes.size();
-
-    for (int i = 0; i < listCount; ++i)
+    if (_shapes.size() < 10)
     {
-        if (_shapes[i]->hit(ray, tMin, closestHit, tempRecord))
-        {
-            hitAnything = true;
-            closestHit = tempRecord.t;
-            hit = tempRecord;
-        }
-    }
+        intersection tempRecord;
+        bool hitAnything = false;
+        double closestHit = tMax;
+        auto listCount = _shapes.size();
 
-    return hitAnything;*/
+        for (int i = 0; i < listCount; ++i)
+        {
+            if (_shapes[i]->hit(ray, tMin, closestHit, tempRecord))
+            {
+                hitAnything = true;
+                closestHit = tempRecord.t;
+                hit = tempRecord;
+            }
+        }
+
+        return hitAnything;
+    }
 
     return _bvh.hit(ray, tMin, tMax, hit);
 }

@@ -6,7 +6,8 @@ class material;
 struct intersection
 {
     float t;
-    glm::vec3 point;
-    glm::vec3 normal;
+    vec3 point;
+    vec3 normal;
+    vec2 uv;
     material* material;
 };

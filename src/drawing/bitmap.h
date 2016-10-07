@@ -9,6 +9,9 @@
 class bitmap
 {
 public:
+    static bitmap* load(std::string fileName);
+
+public:
     bitmap(uint width, uint height);
     bitmap(uint width, uint height, byte* data);
     void setPixel(uint x, uint y, float r, float g, float b);

@@ -17,6 +17,7 @@ public:
 
         return c0;
     }
+
 private:
     vec3 _scale;
     vec3 _color;

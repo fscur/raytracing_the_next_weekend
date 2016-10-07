@@ -25,7 +25,6 @@ public:
 
 private:
     void initInput();
-    void initCamera();
     void initPathTracer();
     void initScene();
     void launchPathTracer();

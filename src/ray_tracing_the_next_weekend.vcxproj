@@ -43,8 +43,8 @@
     <ClCompile Include="screen.cpp" />
     <ClCompile Include="shapes\movingSphere.cpp" />
     <ClCompile Include="shapes\sphere.cpp" />
+    <ClCompile Include="textures\imageTexture.cpp" />
     <ClCompile Include="textures\solidColor.cpp" />
-    <ClCompile Include="textures\solidColor.h" />
     <ClCompile Include="time\stopwatch.cpp" />
     <ClCompile Include="time\time.cpp" />
   </ItemGroup>
@@ -91,8 +91,10 @@
     <ClInclude Include="screen.h" />
     <ClInclude Include="shapes\sphere.h" />
     <ClInclude Include="textures\checker.h" />
+    <ClInclude Include="textures\imageTexture.h" />
     <ClInclude Include="textures\marble.h" />
     <ClInclude Include="textures\noise.h" />
+    <ClInclude Include="textures\solidColor.h" />
     <ClInclude Include="textures\texture.h" />
     <ClInclude Include="time\stopwatch.h" />
     <ClInclude Include="time\time.h" />
@@ -153,9 +155,7 @@
     <LibraryPath>../libs/win32;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\bin</OutDir>
-    <IntDir>..\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -164,8 +164,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>../bin/$(Configuration)/</OutDir>
-    <IntDir>../bin/</IntDir>
+    <OutDir>..\bin\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -204,8 +204,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../libs</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
     </Link>
     <Manifest />
     <Manifest>

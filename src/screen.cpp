@@ -32,7 +32,6 @@ screen::~screen()
 void screen::onInit()
 {
     initInput();
-    initCamera();
     initScene();
     initPathTracer();
     updateTitle();
@@ -44,21 +43,9 @@ void screen::initInput()
     input::keyUp->assign(std::bind(&screen::onKeyUp, this, std::placeholders::_1));
 }
 
-void screen::initCamera()
-{
-    vec3 eye(12.0f, 2.0f, 6.0f);
-    vec3 at(0.0f, 0.5f, 0.0f);
-    float focusDistance = length(eye - at);
-    float aperture = 0.0f;
-    float fov = 30.0f * (glm::pi<float>() / 180.0f);
-
-    _camera = new camera(fov, ASPECT, aperture, focusDistance, 1.0);
-    _camera->lookAt(eye, at, vec3(0.0f, 1.0f, 0.0f));
-}
-
 void screen::initScene()
 {
-    _scene = scene::scene2(_camera);
+    _scene = scene::earthScene();
 }
 
 void screen::initPathTracer()
