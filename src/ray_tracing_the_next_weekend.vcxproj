@@ -42,6 +42,8 @@
     <ClCompile Include="screen.cpp" />
     <ClCompile Include="shapes\movingSphere.cpp" />
     <ClCompile Include="shapes\sphere.cpp" />
+    <ClCompile Include="textures\solidColor.cpp" />
+    <ClCompile Include="textures\solidColor.h" />
     <ClCompile Include="time\stopwatch.cpp" />
     <ClCompile Include="time\time.cpp" />
   </ItemGroup>
@@ -86,6 +88,8 @@
     <ClInclude Include="io\path.h" />
     <ClInclude Include="screen.h" />
     <ClInclude Include="shapes\sphere.h" />
+    <ClInclude Include="textures\checker.h" />
+    <ClInclude Include="textures\texture.h" />
     <ClInclude Include="time\stopwatch.h" />
     <ClInclude Include="time\time.h" />
   </ItemGroup>

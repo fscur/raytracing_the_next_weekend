@@ -9,7 +9,9 @@
 class scene
 {
 public:
-    static scene* createRandomScene(camera* camera);
+    static scene* scene1(camera* camera);
+    static scene* scene2(camera* camera);
+    static scene* scene3(camera* camera);
 
 public:
     scene(camera* camera);

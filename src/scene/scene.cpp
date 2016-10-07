@@ -4,12 +4,18 @@
 #include "../materials/lambertian.h"
 #include "../materials/metal.h"
 #include "../materials/dielectric.h"
+#include "../textures/solidColor.h" 
+#include "../textures/checker.h"
 #include "scene.h"
 
-scene* scene::createRandomScene(camera* camera)
+scene* scene::scene1(camera* camera)
 {
     scene* world = new scene(camera);
-    world->addShape(new sphere(vec3(+0.0f, -1000.f, 0.0f), 1000.0f, new lambertian(vec3(0.5f, 0.5f, 0.5f))));
+    world->addShape(
+        new sphere(
+            vec3(+0.0f, -1000.f, 0.0f), 
+            1000.0f, 
+            new lambertian(new solidColor(vec3(0.5f, 0.5f, 0.5f)))));
 
     int w = 3;
 
@@ -43,7 +49,7 @@ scene* scene::createRandomScene(camera* camera)
                             center,
                             0.2f,
                             1.0f,
-                            new lambertian(color),
+                            new lambertian(new solidColor(color)),
                             movementFunc));
                 }
                 else if (choose_mat < 0.7)
@@ -53,7 +59,7 @@ scene* scene::createRandomScene(camera* camera)
                         random::next() * random::next(),
                         random::next() * random::next());
 
-                    world->addShape(new sphere(center, 0.2f, new lambertian(color)));
+                    world->addShape(new sphere(center, 0.2f, new lambertian(new solidColor(color))));
 
                 }
                 else if (choose_mat < 0.85)
@@ -63,7 +69,7 @@ scene* scene::createRandomScene(camera* camera)
                         0.5f * (1.0f + random::next()),
                         0.5f * (1.0f + random::next()));
 
-                    world->addShape(new sphere(center, 0.2f, new metal(color, 0.5f * random::next())));
+                    world->addShape(new sphere(center, 0.2f, new metal(new solidColor(color), 0.5f * random::next())));
                 }
                 else
                 {
@@ -73,9 +79,9 @@ scene* scene::createRandomScene(camera* camera)
         }
     }
 
-    world->addShape(new sphere(vec3(-4, 1, 0), 1.0, new metal(vec3(0.5, 0.4, 0.7), 0.0)));
+    world->addShape(new sphere(vec3(-4, 1, 0), 1.0, new metal(new solidColor(vec3(0.5, 0.4, 0.7)), 0.0)));
     world->addShape(new sphere(vec3(0, 1, 0), 1.0, new dielectric(1.5)));
-    world->addShape(new sphere(vec3(4, 1, 0), 1.0, new lambertian(vec3(0.4, 0.2, 0.1))));
+    world->addShape(new sphere(vec3(4, 1, 0), 1.0, new lambertian(new solidColor(vec3(0.4, 0.2, 0.1)))));
 
     /*int w = 100;
 
@@ -94,6 +100,49 @@ scene* scene::createRandomScene(camera* camera)
     world->addShape(new sphere(vec3(+3.0f, 1.0f, -3.0f), 1.0f, new dielectric(1.5f)));
     world->addShape(new sphere(vec3(+3.0f, 1.0f, +3.0f), 1.0f, new lambertian(vec3(0.9f, 0.1f, 0.0f))));
 */
+    world->buildBvh();
+
+    return world;
+}
+
+scene* scene::scene2(camera* camera)
+{
+    scene* world = new scene(camera);
+
+    auto checkerTexture = new checker(solidColor::white, solidColor::black);
+
+    auto position = vec3(+0.0f, -1000.f, 0.0f);
+    world->addShape(new sphere(position, 1000.0f, new lambertian(checkerTexture)));
+
+    /*int w = 100;
+
+    for (int i = -w; i < w; ++i)
+    {
+    for (int j = -w; j < w; ++j)
+    {
+    vec3 center(i + 1.0f * random::next(), 0.2, j + 1.0 * random::next());
+    world->addShape(new sphere(center, 0.2f, new lambertian(vec3(random::next(), random::next(), random::next()))));
+    }
+    }*/
+
+    world->addShape(new sphere(vec3(-3.0f, 1.0f, -3.0f), 1.0f, new metal(solidColor::red, 0.1f)));
+    world->addShape(new sphere(vec3(-3.0f, 1.0f, +3.0f), 1.0f, new dielectric(1.5f)));
+    world->addShape(new sphere(vec3(+3.0f, 1.0f, -3.0f), 1.0f, new dielectric(1.5f)));
+    world->addShape(new sphere(vec3(+3.0f, 1.0f, +3.0f), 1.0f, new lambertian(solidColor::white)));
+    
+    world->buildBvh();
+
+    return world;
+}
+
+scene* scene::scene3(camera* camera)
+{
+    scene* world = new scene(camera);
+
+    auto checkerTexture = new checker(solidColor::white, solidColor::red);
+    world->addShape(new sphere(vec3(0.0f, -10.0f, 0.0f), 10.0f, new metal(new solidColor(vec3(0.2, 0.5, 0.3)), 0.05f)));
+    world->addShape(new sphere(vec3(0.0f, 10.0f, 0.0f), 10.0f, new lambertian(checkerTexture)));
+    
     world->buildBvh();
 
     return world;
