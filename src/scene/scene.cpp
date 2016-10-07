@@ -6,6 +6,9 @@
 #include "../materials/dielectric.h"
 #include "../textures/solidColor.h" 
 #include "../textures/checker.h"
+#include "../textures/noise.h"
+#include "../textures/marble.h"
+
 #include "scene.h"
 
 scene* scene::scene1(camera* camera)
@@ -13,8 +16,8 @@ scene* scene::scene1(camera* camera)
     scene* world = new scene(camera);
     world->addShape(
         new sphere(
-            vec3(+0.0f, -1000.f, 0.0f), 
-            1000.0f, 
+            vec3(+0.0f, -1000.f, 0.0f),
+            1000.0f,
             new lambertian(new solidColor(vec3(0.5f, 0.5f, 0.5f)))));
 
     int w = 3;
@@ -94,12 +97,12 @@ scene* scene::scene1(camera* camera)
         }
     }*/
 
-   /* world->addShape(new sphere(vec3(+0.0f, -1000.f, 0.0f), 1000.0f, new lambertian(vec3(0.5f, 0.5f, 0.5f))));
-    world->addShape(new sphere(vec3(-3.0f, 1.0f, -3.0f), 1.0f, new metal(vec3(0.5f, 0.4f, 0.7f), 0.0f)));
-    world->addShape(new sphere(vec3(-3.0f, 1.0f, +3.0f), 1.0f, new dielectric(1.5f)));
-    world->addShape(new sphere(vec3(+3.0f, 1.0f, -3.0f), 1.0f, new dielectric(1.5f)));
-    world->addShape(new sphere(vec3(+3.0f, 1.0f, +3.0f), 1.0f, new lambertian(vec3(0.9f, 0.1f, 0.0f))));
-*/
+    /* world->addShape(new sphere(vec3(+0.0f, -1000.f, 0.0f), 1000.0f, new lambertian(vec3(0.5f, 0.5f, 0.5f))));
+     world->addShape(new sphere(vec3(-3.0f, 1.0f, -3.0f), 1.0f, new metal(vec3(0.5f, 0.4f, 0.7f), 0.0f)));
+     world->addShape(new sphere(vec3(-3.0f, 1.0f, +3.0f), 1.0f, new dielectric(1.5f)));
+     world->addShape(new sphere(vec3(+3.0f, 1.0f, -3.0f), 1.0f, new dielectric(1.5f)));
+     world->addShape(new sphere(vec3(+3.0f, 1.0f, +3.0f), 1.0f, new lambertian(vec3(0.9f, 0.1f, 0.0f))));
+ */
     world->buildBvh();
 
     return world;
@@ -110,26 +113,29 @@ scene* scene::scene2(camera* camera)
     scene* world = new scene(camera);
 
     auto checkerTexture = new checker(solidColor::white, solidColor::black);
+    auto noiseTexture = new noise(vec3(5.0f));
+    auto blueMarbleTexture = new marble(vec3(5.0f), vec3(0.5, 0.6, 0.9));
 
     auto position = vec3(+0.0f, -1000.f, 0.0f);
-    world->addShape(new sphere(position, 1000.0f, new lambertian(checkerTexture)));
+    world->addShape(new sphere(position, 1000.0f, new lambertian(blueMarbleTexture)));
 
-    /*int w = 100;
+    /*int w = 3;
 
     for (int i = -w; i < w; ++i)
     {
-    for (int j = -w; j < w; ++j)
-    {
-    vec3 center(i + 1.0f * random::next(), 0.2, j + 1.0 * random::next());
-    world->addShape(new sphere(center, 0.2f, new lambertian(vec3(random::next(), random::next(), random::next()))));
-    }
+        for (int j = -w; j < w; ++j)
+        {
+            vec3 center(i + 1.0f * random::next(), 0.2, j + 1.0 * random::next());
+            world->addShape(new sphere(center, 0.2f, new lambertian(new solidColor(vec3(
+                0.6 * random::next(), 0.3 * random::next(), 0.6 * random::next())))));
+        }
     }*/
 
-    world->addShape(new sphere(vec3(-3.0f, 1.0f, -3.0f), 1.0f, new metal(solidColor::red, 0.1f)));
-    world->addShape(new sphere(vec3(-3.0f, 1.0f, +3.0f), 1.0f, new dielectric(1.5f)));
+    world->addShape(new sphere(vec3(-3.0f, 1.0f, -3.0f), 1.0f, new metal(new solidColor(vec3(0.2, 0.3, 0.5)), 0.0f)));
+    world->addShape(new sphere(vec3(-3.0f, 1.0f, +3.0f), 1.0f, new dielectric(2.4f)));
     world->addShape(new sphere(vec3(+3.0f, 1.0f, -3.0f), 1.0f, new dielectric(1.5f)));
-    world->addShape(new sphere(vec3(+3.0f, 1.0f, +3.0f), 1.0f, new lambertian(solidColor::white)));
-    
+    world->addShape(new sphere(vec3(+3.0f, 1.0f, +3.0f), 1.0f, new lambertian(solidColor::red)));
+
     world->buildBvh();
 
     return world;
@@ -142,13 +148,13 @@ scene* scene::scene3(camera* camera)
     auto checkerTexture = new checker(solidColor::white, solidColor::red);
     world->addShape(new sphere(vec3(0.0f, -10.0f, 0.0f), 10.0f, new metal(new solidColor(vec3(0.2, 0.5, 0.3)), 0.05f)));
     world->addShape(new sphere(vec3(0.0f, 10.0f, 0.0f), 10.0f, new lambertian(checkerTexture)));
-    
+
     world->buildBvh();
 
     return world;
 }
 
-scene::scene(camera* camera) : 
+scene::scene(camera* camera) :
     _camera(camera)
 {
 }

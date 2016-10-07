@@ -32,6 +32,7 @@
     <ClCompile Include="materials\dielectric.cpp" />
     <ClCompile Include="materials\lambertian.cpp" />
     <ClCompile Include="materials\metal.cpp" />
+    <ClCompile Include="math\perlin.cpp" />
     <ClCompile Include="pathTracing\pathTracer.cpp" />
     <ClCompile Include="scene\camera.cpp" />
     <ClCompile Include="samplers\sampler.cpp" />
@@ -72,6 +73,7 @@
     <ClInclude Include="materials\material.h" />
     <ClInclude Include="materials\metal.h" />
     <ClInclude Include="math\aabb.h" />
+    <ClInclude Include="math\perlin.h" />
     <ClInclude Include="math\rectangle.h" />
     <ClInclude Include="pathTracing\pathTracer.h" />
     <ClInclude Include="scene\camera.h" />
@@ -89,6 +91,8 @@
     <ClInclude Include="screen.h" />
     <ClInclude Include="shapes\sphere.h" />
     <ClInclude Include="textures\checker.h" />
+    <ClInclude Include="textures\marble.h" />
+    <ClInclude Include="textures\noise.h" />
     <ClInclude Include="textures\texture.h" />
     <ClInclude Include="time\stopwatch.h" />
     <ClInclude Include="time\time.h" />
