@@ -10,7 +10,7 @@ screen::screen(std::wstring name, uint width, uint height) :
     window(name, width, height),
     ASPECT(1.77777778f),
     MIN_SSP(1),
-    MAX_SSP(4096),
+    MAX_SSP(16384),
     MIN_WIDTH(200),
     MAX_WIDTH(800),
     TILE_WIDTH(32),
@@ -18,17 +18,16 @@ screen::screen(std::wstring name, uint width, uint height) :
     _processing(false),
     _resultWidth(width),
     _resultHeight(uint(float(MAX_WIDTH) / ASPECT)),
-    _currentSsp(MIN_SSP)
+    _currentSsp(MIN_SSP),
+    _currentScene(1)
 {
 }
 
 screen::~screen()
 {
-    delete _scene0;
-    delete _scene1;
-    delete _scene2;
-    delete _scene3;
-    delete _scene4;
+    for (auto& scene : _scenes)
+        delete scene;
+
     delete _camera;
     delete _pathTracer;
 }
@@ -49,18 +48,19 @@ void screen::initInput()
 
 void screen::initScene()
 {
-    _scene0 = scene::scene1();
-    _scene1 = scene::scene2();
-    _scene2 = scene::scene3();
-    _scene3 = scene::earthScene();
-    _scene4 = scene::quadLightScene();
-    _scene5 = scene::cornelBoxScene();
-    _scene6 = scene::cornelBoxSmokeScene();
+    _scenes.push_back(scene::scene1());
+    _scenes.push_back(scene::scene2());
+    _scenes.push_back(scene::scene3());
+    _scenes.push_back(scene::earthScene());
+    _scenes.push_back(scene::quadLightScene());
+    _scenes.push_back(scene::cornelBoxScene());
+    _scenes.push_back(scene::cornelBoxSmokeScene());
+    _scenes.push_back(scene::finalScene());
 }
 
 void screen::initPathTracer()
 {
-    _pathTracer = new pathTracer(_scene0);
+    _pathTracer = new pathTracer(_scenes[0]);
 }
 
 void screen::onKeyUp(keyboardEventArgs* args)
@@ -89,25 +89,36 @@ void screen::onKeyUp(keyboardEventArgs* args)
             updateTitle();
             break;
         case PHIK_1:
-            _pathTracer->setScene(_scene0);
+            changeScene(1);
+            updateTitle();
             break;
         case PHIK_2:
-            _pathTracer->setScene(_scene1);
+            changeScene(2);
+            updateTitle();
             break;
         case PHIK_3:
-            _pathTracer->setScene(_scene2);
+            changeScene(3);
+            updateTitle();
             break;
         case PHIK_4:
-            _pathTracer->setScene(_scene3);
+            changeScene(4);
+            updateTitle();
             break;
         case PHIK_5:
-            _pathTracer->setScene(_scene4);
+            changeScene(5);
+            updateTitle();
             break;
         case PHIK_6:
-            _pathTracer->setScene(_scene5);
+            changeScene(6);
+            updateTitle();
             break;
         case PHIK_7:
-            _pathTracer->setScene(_scene6);
+            changeScene(7);
+            updateTitle();
+            break;
+        case PHIK_8:
+            changeScene(8);
+            updateTitle();
             break;
         default:
             break;
@@ -124,6 +135,8 @@ void screen::onKeyUp(keyboardEventArgs* args)
             break;
         }
     }
+
+
 }
 
 void screen::launchPathTracer()
@@ -263,7 +276,8 @@ void screen::halveResolution()
 
 void screen::updateTitle()
 {
-    auto title = L"hit enter to start [" +
+    auto title = L"scene: " + std::to_wstring(_currentScene) + L" | "
+        L"hit enter to start [" +
         std::to_wstring(_resultWidth) + L" x " +
         std::to_wstring(_resultHeight) + L" x " +
         std::to_wstring(_currentSsp) + L" spp]";
@@ -282,6 +296,13 @@ void screen::writeInstructionsInConsole()
     console::writeLine("Left:   double resolution.");
     console::writeLine("Right:  halve resolution.");
     console::writeLine("Enter:  path trace.");
+    console::writeLine("[1..8]: chance scene.");
     console::writeLine("ESC:    cancel.");
     console::writeLine("");
+}
+
+void screen::changeScene(int sceneId)
+{
+    _currentScene = sceneId;
+    _pathTracer->setScene(_scenes[_currentScene - 1]);
 }

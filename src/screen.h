@@ -34,6 +34,7 @@ private:
     void halveResolution();
     void updateTitle();
     void writeInstructionsInConsole();
+    void changeScene(int sceneId);
 
 private:
     const float ASPECT;
@@ -51,13 +52,8 @@ private:
 
     camera* _camera;
     
-    scene* _scene0;
-    scene* _scene1;
-    scene* _scene2;
-    scene* _scene3;
-    scene* _scene4;
-    scene* _scene5;
-    scene* _scene6;
+    std::vector<scene*> _scenes;
+    int _currentScene;
 
     pathTracer* _pathTracer;
 };

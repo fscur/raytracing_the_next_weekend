@@ -17,6 +17,7 @@ public:
     static scene* quadLightScene();
     static scene* cornelBoxScene();
     static scene* cornelBoxSmokeScene();
+    static scene* finalScene();
 
 public:
     scene(camera* camera, std::function<vec3(const ray&)> getBackgroundFunction);
