@@ -71,6 +71,7 @@
     <ClInclude Include="io\textWriter.h" />
     <ClInclude Include="materials\dielectric.h" />
     <ClInclude Include="materials\emissive.h" />
+    <ClInclude Include="materials\isotropic.h" />
     <ClInclude Include="materials\lambertian.h" />
     <ClInclude Include="materials\material.h" />
     <ClInclude Include="materials\metal.h" />
@@ -87,6 +88,7 @@
     <ClInclude Include="math\vmath.h" />
     <ClInclude Include="drawing\bitmap.h" />
     <ClInclude Include="shapes\box.h" />
+    <ClInclude Include="shapes\constantMedium.h" />
     <ClInclude Include="shapes\flipNormals.h" />
     <ClInclude Include="shapes\movingSphere.h" />
     <ClInclude Include="shapes\quad.h" />

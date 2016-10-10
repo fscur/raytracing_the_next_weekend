@@ -55,6 +55,7 @@ void screen::initScene()
     _scene3 = scene::earthScene();
     _scene4 = scene::quadLightScene();
     _scene5 = scene::cornelBoxScene();
+    _scene6 = scene::cornelBoxSmokeScene();
 }
 
 void screen::initPathTracer()
@@ -104,6 +105,9 @@ void screen::onKeyUp(keyboardEventArgs* args)
             break;
         case PHIK_6:
             _pathTracer->setScene(_scene5);
+            break;
+        case PHIK_7:
+            _pathTracer->setScene(_scene6);
             break;
         default:
             break;

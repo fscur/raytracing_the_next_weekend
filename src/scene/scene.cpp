@@ -15,6 +15,7 @@
 #include "../shapes/box.h"
 #include "../shapes/translate.h"
 #include "../shapes/rotateY.h"
+#include "../shapes/constantMedium.h"
 
 #include "scene.h"
 
@@ -316,6 +317,71 @@ scene* scene::cornelBoxScene()
 
     world->addShape(new translate(new rotateY(shortBox, -18.0f * (glm::pi<float>()/180.0f)), vec3(130.0f, 0.0f, 65.0f)));
     world->addShape(new translate(new rotateY(tallBox, 15.0f * (glm::pi<float>() / 180.0f)), vec3(265.0f, 0.0f, 295.0f)));
+
+    world->buildBvh();
+
+    return world;
+}
+
+scene* scene::cornelBoxSmokeScene()
+{
+    auto backGroundFunction = [](const ray& ray)
+    {
+        return vec3(0, 1.0f, 5.0f) / 255.999f;
+    };
+
+    vec3 eye(278.0f, 278.0f, -800.0f);
+    vec3 at(278.0f, 278.0, 0.0f);
+    float focusDistance = length(eye - at);
+    float aperture = 0.0f;
+    float fov = 40.0f * (glm::pi<float>() / 180.0f);
+
+    auto cam = new camera(fov, 1.7778f, aperture, focusDistance, 1.0);
+    cam->lookAt(eye, at, vec3(0.0f, 1.0f, 0.0f));
+
+    scene* world = new scene(cam, backGroundFunction);
+
+    material* red = new lambertian(new solidColor(vec3(0.65, 0.05, 0.05)));
+    material* white = new lambertian(new solidColor(vec3(0.73, 0.73, 0.73)));
+    material* green = new lambertian(new solidColor(vec3(0.12, 0.45, 0.15)));
+    material* light = new emissive(new solidColor(vec3(1, 1, 1)));
+
+    auto greenWall = new yz_quad(rectangle<float>(0.0f, 0.0f, 555.0f, 555.0f), 555.0f, green);
+    auto redWall = new yz_quad(rectangle<float>(0.0f, 0.0f, 555.0f, 555.0f), 0.0f, red);
+    //auto ceilingLight = new zx_quad(rectangle<float>(213.0f, 227.0f, 130.0f, 105.0f), 554.0f, light);
+    //auto ceilingLight = new zx_quad(rectangle<float>(213.0f, 227.0f, 130.0f, 105.0f), 554.0f, light);
+    auto ceiling = new zx_quad(rectangle<float>(0.0f, 0.0f, 555.0f, 555.0f), 555.0f, light);
+    auto floor = new zx_quad(rectangle<float>(0.0f, 0.0f, 555.0f, 555.0f), 0.0f, white);
+    auto backWall = new xy_quad(rectangle<float>(0.0f, 0.0f, 555.0f, 555.0f), 555.0f, white);
+
+    world->addShape(new flipNormals(greenWall));
+    world->addShape(redWall);
+    world->addShape(new flipNormals(ceiling));
+    //world->addShape(ceilingLight);
+    world->addShape(floor);
+    world->addShape(new flipNormals(backWall));
+
+    auto shortBox = new box(vec3(0.0f, 0.0f, 0.0f), vec3(165.0f, 165.0f, 165.0f), white);
+    auto tallBox = new box(vec3(0.0f, 0.0f, 0.0f), vec3(165.0f, 330.0f, 165.0f), white);
+
+    auto whiteSmokeBox = 
+        new constantMedium(
+            new translate(
+                new rotateY(shortBox, -18.0f * (glm::pi<float>() / 180.0f)), 
+                vec3(130.0f, 0.0f, 65.0f)), 
+            0.01f, 
+            solidColor::white);
+
+    auto darkSmokeBox =
+        new constantMedium(
+            new translate(
+                new rotateY(tallBox, 15.0f * (glm::pi<float>() / 180.0f)),
+                vec3(265.0f, 0.0f, 295.0f)),
+            0.01f,
+            solidColor::black);
+
+    world->addShape(whiteSmokeBox);
+    world->addShape(darkSmokeBox);
 
     world->buildBvh();
 

@@ -57,6 +57,7 @@ private:
     scene* _scene3;
     scene* _scene4;
     scene* _scene5;
+    scene* _scene6;
 
     pathTracer* _pathTracer;
 };
