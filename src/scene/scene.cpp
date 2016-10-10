@@ -11,6 +11,7 @@
 #include "../textures/marble.h"
 #include "../textures/imageTexture.h"
 #include "../shapes/quad.h"
+#include "../shapes/flipNormals.h"
 #include "scene.h"
 
 scene* scene::scene1()
@@ -242,7 +243,7 @@ scene* scene::quadLightScene()
         return vec3(0, 1.0f, 5.0f) / 255.999f;
     };
 
-    vec3 eye(12.0f, 5.0f, 4.0f);
+    vec3 eye(20.0f, 15.0f, 20.0f);
     vec3 at(0.0f, 0.0, 0.0f);
     float focusDistance = length(eye - at);
     float aperture = 0.0f;
@@ -258,8 +259,9 @@ scene* scene::quadLightScene()
             1000.0f,
             new lambertian(new solidColor(vec3(0.5f, 0.5f, 0.5f)))));
 
+    world->addShape(new xy_quad(rectangle<float>(-5.0f, 0.0f, 10.0f, 5.0f), -5.0f, new emissive(new solidColor(vec3(1.0f, 0.8f, 0.65f)))));
+    world->addShape(new yz_quad(rectangle<float>(0.0f, -5.0f, 5.0f, 10.0f), -5.0f, new emissive(new solidColor(vec3(1.0f, 0.8f, 0.65f)))));
     world->addShape(new sphere(vec3(0.0f, 1.0f, +5.0f), 1.0f, new metal(solidColor::white, 0.1f)));
-    world->addShape(new xy_quad(-5, 5, 0, 10, -4.0f, new emissive(new solidColor(vec3(1.0f, 0.8f, 0.65f)))));
     world->addShape(new sphere(vec3(3.0f, 1.0f, +3.0f), 1.0f, new dielectric(1.5f)));
     world->addShape(new sphere(vec3(0.0f, 1.0f, +0.0f), 1.0f, new lambertian(solidColor::red)));
 
@@ -267,6 +269,49 @@ scene* scene::quadLightScene()
 
     return world;
 }
+
+scene* scene::cornelBoxScene()
+{
+    auto backGroundFunction = [](const ray& ray)
+    {
+        return vec3(0, 1.0f, 5.0f) / 255.999f;
+    };
+
+    vec3 eye(278.0f, 278.0f, -1200.0f);
+    vec3 at(278.0f, 278.0, 0.0f);
+    float focusDistance = length(eye - at);
+    float aperture = 0.0f;
+    float fov = 40.0f * (glm::pi<float>() / 180.0f);
+
+    auto cam = new camera(fov, 1.7778f, aperture, focusDistance, 1.0);
+    cam->lookAt(eye, at, vec3(0.0f, 1.0f, 0.0f));
+
+    scene* world = new scene(cam, backGroundFunction);
+
+    material* red = new lambertian(new solidColor(vec3(0.65, 0.05, 0.05)));
+    material* white = new lambertian(new solidColor(vec3(0.73, 0.73, 0.73)));
+    material* green = new lambertian(new solidColor(vec3(0.12, 0.45, 0.15)));
+    material* light = new emissive(new solidColor(vec3(15, 15, 15)));
+
+    auto greenWall = new yz_quad(rectangle<float>(0.0f, 0.0f, 555.0f, 555.0f), 555.0f, green);
+    auto redWall = new yz_quad(rectangle<float>(0.0f, 0.0f, 555.0f, 555.0f), 0.0f, red);
+    auto ceilingLight = new zx_quad(rectangle<float>(213.0f, 227.0f, 130.0f, 105.0f), 554.0f, light);
+    auto ceiling = new zx_quad(rectangle<float>(0.0f, 0.0f, 555.0f, 555.0f), 555.0f, white);
+    auto floor = new zx_quad(rectangle<float>(0.0f, 0.0f, 555.0f, 555.0f), 0.0f, white);
+    auto backWall = new xy_quad(rectangle<float>(0.0f, 0.0f, 555.0f, 555.0f), 555.0f, white);
+
+    world->addShape(new flipNormals(greenWall));
+    world->addShape(redWall);
+    world->addShape(new flipNormals(ceiling));
+    world->addShape(ceilingLight);
+    world->addShape(floor);
+    world->addShape(new flipNormals(backWall));
+
+    world->buildBvh();
+
+    return world;
+}
+
 
 scene::scene(camera* camera, std::function<vec3(const ray&)> getBackgroundFunction) :
     _camera(camera),

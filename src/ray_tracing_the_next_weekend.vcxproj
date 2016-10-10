@@ -86,6 +86,7 @@
     <ClInclude Include="common\types.h" />
     <ClInclude Include="math\vmath.h" />
     <ClInclude Include="drawing\bitmap.h" />
+    <ClInclude Include="shapes\flipNormals.h" />
     <ClInclude Include="shapes\movingSphere.h" />
     <ClInclude Include="shapes\quad.h" />
     <ClInclude Include="shapes\shape.h" />
