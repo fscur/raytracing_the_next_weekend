@@ -12,6 +12,10 @@
 #include "../textures/imageTexture.h"
 #include "../shapes/quad.h"
 #include "../shapes/flipNormals.h"
+#include "../shapes/box.h"
+#include "../shapes/translate.h"
+#include "../shapes/rotateY.h"
+
 #include "scene.h"
 
 scene* scene::scene1()
@@ -277,7 +281,7 @@ scene* scene::cornelBoxScene()
         return vec3(0, 1.0f, 5.0f) / 255.999f;
     };
 
-    vec3 eye(278.0f, 278.0f, -1200.0f);
+    vec3 eye(278.0f, 278.0f, -800.0f);
     vec3 at(278.0f, 278.0, 0.0f);
     float focusDistance = length(eye - at);
     float aperture = 0.0f;
@@ -306,6 +310,12 @@ scene* scene::cornelBoxScene()
     world->addShape(ceilingLight);
     world->addShape(floor);
     world->addShape(new flipNormals(backWall));
+
+    auto shortBox = new box(vec3(0.0f, 0.0f, 0.0f), vec3(165.0f, 165.0f, 165.0f), white);
+    auto tallBox = new box(vec3(0.0f, 0.0f, 0.0f), vec3(165.0f, 330.0f, 165.0f), white);
+
+    world->addShape(new translate(new rotateY(shortBox, -18.0f * (glm::pi<float>()/180.0f)), vec3(130.0f, 0.0f, 65.0f)));
+    world->addShape(new translate(new rotateY(tallBox, 15.0f * (glm::pi<float>() / 180.0f)), vec3(265.0f, 0.0f, 295.0f)));
 
     world->buildBvh();
 
