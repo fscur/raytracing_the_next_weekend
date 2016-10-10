@@ -47,7 +47,7 @@ vec3 pathTracer::li(const ray& r, int depth)
         //float t = 0.5f * (dir.y + 1.0f);
         //return (1.0f - t) * vec3(1.0f) + t * vec3(0.2f, 0.5f, 0.7f);
 
-        return vec3(0, 1.0f, 5.0f) / 255.999f;
+        return _scene->getBackground(r);
     }
 }
 

@@ -2,9 +2,8 @@
 
 #include "emissive.h"
 
-emissive::emissive(texture* albedo, float intensity) :
-    _albedo(albedo),
-    _intensity(intensity)
+emissive::emissive(texture* albedo) :
+    _albedo(albedo)
 {
 }
 
@@ -15,5 +14,5 @@ bool emissive::scatter(const ray& r, const intersection& hit, glm::vec3& attenua
 
 vec3 emissive::emitted(const vec2 & uv, const vec3 & point) const
 {
-    return _albedo->fetch(uv, point) * _intensity;
+    return _albedo->fetch(uv, point);
 }

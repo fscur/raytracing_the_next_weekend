@@ -15,6 +15,13 @@
 
 scene* scene::scene1()
 {
+    auto backGroundFunction = [](const ray& ray)
+    {
+        vec3 dir = normalize(ray.direction);
+        float t = 0.5f * (dir.y + 1.0f);
+        return (1.0f - t) * vec3(1.0f) + t * vec3(0.2f, 0.5f, 0.7f);
+    };
+
     vec3 eye(12.0f, 2.0f, 6.0f);
     vec3 at(0.0f, 0.0, 0.0f);
     float focusDistance = length(eye - at);
@@ -24,7 +31,7 @@ scene* scene::scene1()
     auto cam = new camera(fov, 1.7778f, aperture, focusDistance, 1.0);
     cam->lookAt(eye, at, vec3(0.0f, 1.0f, 0.0f));
 
-    scene* world = new scene(cam);
+    scene* world = new scene(cam, backGroundFunction);
     world->addShape(
         new sphere(
             vec3(+0.0f, -1000.f, 0.0f),
@@ -121,6 +128,13 @@ scene* scene::scene1()
 
 scene* scene::scene2()
 {
+    auto backGroundFunction = [](const ray& ray)
+    {
+        vec3 dir = normalize(ray.direction);
+        float t = 0.5f * (dir.y + 1.0f);
+        return (1.0f - t) * vec3(1.0f) + t * vec3(0.2f, 0.5f, 0.7f);
+    };
+
     vec3 eye(12.0f, 2.0f, 6.0f);
     vec3 at(0.0f, 0.0, 0.0f);
     float focusDistance = length(eye - at);
@@ -130,7 +144,7 @@ scene* scene::scene2()
     auto cam = new camera(fov, 1.7778f, aperture, focusDistance, 1.0);
     cam->lookAt(eye, at, vec3(0.0f, 1.0f, 0.0f));
 
-    scene* world = new scene(cam);
+    scene* world = new scene(cam, backGroundFunction);
 
     auto checkerTexture = new checker(solidColor::white, solidColor::black);
     auto noiseTexture = new noise(vec3(5.0f));
@@ -163,6 +177,13 @@ scene* scene::scene2()
 
 scene* scene::scene3()
 {
+    auto backGroundFunction = [](const ray& ray)
+    {
+        vec3 dir = normalize(ray.direction);
+        float t = 0.5f * (dir.y + 1.0f);
+        return (1.0f - t) * vec3(1.0f) + t * vec3(0.2f, 0.5f, 0.7f);
+    };
+
     vec3 eye(12.0f, 2.0f, 6.0f);
     vec3 at(0.0f, 0.0, 0.0f);
     float focusDistance = length(eye - at);
@@ -172,7 +193,7 @@ scene* scene::scene3()
     auto cam = new camera(fov, 1.7778f, aperture, focusDistance, 1.0);
     cam->lookAt(eye, at, vec3(0.0f, 1.0f, 0.0f));
 
-    scene* world = new scene(cam);
+    scene* world = new scene(cam, backGroundFunction);
 
     auto checkerTexture = new checker(solidColor::white, solidColor::red);
     world->addShape(new sphere(vec3(0.0f, -10.0f, 0.0f), 10.0f, new metal(new solidColor(vec3(0.2, 0.5, 0.3)), 0.05f)));
@@ -185,6 +206,11 @@ scene* scene::scene3()
 
 scene* scene::earthScene()
 {
+    auto backGroundFunction = [](const ray& ray) 
+    {
+        return vec3(0, 1.0f, 5.0f) / 255.999f;
+    };
+
     vec3 eye(0.0f, 0.5f, 2.0f);
     vec3 at(0.0f, 1.2, 0.0f);
     float focusDistance = length(eye - at);
@@ -194,7 +220,7 @@ scene* scene::earthScene()
     auto cam = new camera(fov, 1.7778f, aperture, focusDistance, 1.0);
     cam->lookAt(eye, at, vec3(0.0f, 1.0f, 0.0f));
 
-    scene* world = new scene(cam);
+    scene* world = new scene(cam, backGroundFunction);
 
     auto earthTexture = new imageTexture("earthmap.jpg");
     auto earthPosition = vec3(0.0f, 0.0f, 0.0f);
@@ -202,7 +228,7 @@ scene* scene::earthScene()
 
     auto moonTexture = new imageTexture("moonmap.png");
     auto moonPosition = vec3(1.9f, 4.2f, -8.0f);
-    world->addShape(new sphere(moonPosition, 0.15f, new emissive(moonTexture, 10.0f)));
+    world->addShape(new sphere(moonPosition, 0.15f, new emissive(moonTexture)));
 
     world->buildBvh();
 
@@ -211,6 +237,11 @@ scene* scene::earthScene()
 
 scene* scene::quadLightScene()
 {
+    auto backGroundFunction = [](const ray& ray)
+    {
+        return vec3(0, 1.0f, 5.0f) / 255.999f;
+    };
+
     vec3 eye(12.0f, 5.0f, 4.0f);
     vec3 at(0.0f, 0.0, 0.0f);
     float focusDistance = length(eye - at);
@@ -220,24 +251,26 @@ scene* scene::quadLightScene()
     auto cam = new camera(fov, 1.7778f, aperture, focusDistance, 1.0);
     cam->lookAt(eye, at, vec3(0.0f, 1.0f, 0.0f));
 
-    scene* world = new scene(cam);
+    scene* world = new scene(cam, backGroundFunction);
     world->addShape(
         new sphere(
             vec3(+0.0f, -1000.f, 0.0f),
             1000.0f,
             new lambertian(new solidColor(vec3(0.5f, 0.5f, 0.5f)))));
 
-    world->addShape(new sphere(vec3(+3.0f, 1.0f, +3.0f), 1.0f, new lambertian(solidColor::red)));
-    world->addShape(new xy_quad(0, 4, 0, 4, 0, new emissive(solidColor::white, 1.0f)));
-    world->addShape(new sphere(vec3(0.0f, 1.0f, +3.0f), 1.0f, new emissive(solidColor::blue, 1.0f)));
+    world->addShape(new sphere(vec3(0.0f, 1.0f, +5.0f), 1.0f, new metal(solidColor::white, 0.1f)));
+    world->addShape(new xy_quad(-5, 5, 0, 10, -4.0f, new emissive(new solidColor(vec3(1.0f, 0.8f, 0.65f)))));
+    world->addShape(new sphere(vec3(3.0f, 1.0f, +3.0f), 1.0f, new dielectric(1.5f)));
+    world->addShape(new sphere(vec3(0.0f, 1.0f, +0.0f), 1.0f, new lambertian(solidColor::red)));
 
     world->buildBvh();
 
     return world;
 }
 
-scene::scene(camera* camera) :
-    _camera(camera)
+scene::scene(camera* camera, std::function<vec3(const ray&)> getBackgroundFunction) :
+    _camera(camera),
+    _getBackgroundFunction(getBackgroundFunction)
 {
 }
 
