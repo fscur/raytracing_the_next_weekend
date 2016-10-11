@@ -11,9 +11,13 @@ bitmapWriter::bitmapWriter(uint width, uint height) :
 
 void bitmapWriter::write(uint x, uint y, float r, float g, float b) const
 {
-    _data[(y * _width * 4) + (x * 4) + 0] = byte(255.9999f * b);
-    _data[(y * _width * 4) + (x * 4) + 1] = byte(255.9999f * g);
-    _data[(y * _width * 4) + (x * 4) + 2] = byte(255.9999f * r);
+    auto r0 = glm::clamp(255.9999f * r, 0.0f, 255.9999f);
+    auto g0 = glm::clamp(255.9999f * g, 0.0f, 255.9999f);
+    auto b0 = glm::clamp(255.9999f * b, 0.0f, 255.9999f);
+
+    _data[(y * _width * 4) + (x * 4) + 0] = byte(b0);
+    _data[(y * _width * 4) + (x * 4) + 1] = byte(g0);
+    _data[(y * _width * 4) + (x * 4) + 2] = byte(r0);
     _data[(y * _width * 4) + (x * 4) + 3] = 255;
 }
 

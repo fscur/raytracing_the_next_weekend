@@ -13,9 +13,8 @@ public:
 
     virtual vec3 fetch(const vec2& uv, const vec3 point) const override
     {
-        vec3 c0 = _color * 0.5f * (1.0f + sin(_scale.z*point.z + 10 * _perlin.turb(point)));
-
-        return c0;
+        return _color * 0.5f * (1.0f + sin(_scale.x*point.x + 5.0f * _perlin.turb(_scale.x * point)));
+        //vec3 c0 = _color * 0.5f * (1.0f + sin(_scale.x*point.x + 10 * _perlin.turb(point)));
     }
 
 private:

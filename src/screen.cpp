@@ -10,9 +10,9 @@ screen::screen(std::wstring name, uint width, uint height) :
     window(name, width, height),
     ASPECT(1.77777778f),
     MIN_SSP(1),
-    MAX_SSP(16384),
+    MAX_SSP(32768),
     MIN_WIDTH(200),
-    MAX_WIDTH(800),
+    MAX_WIDTH(1600),
     TILE_WIDTH(32),
     TILE_HEIGHT(32),
     _processing(false),
@@ -50,7 +50,7 @@ void screen::initScene()
 {
     _scenes.push_back(scene::scene1());
     _scenes.push_back(scene::scene2());
-    _scenes.push_back(scene::scene3());
+    _scenes.push_back(scene::poolScene());
     _scenes.push_back(scene::earthScene());
     _scenes.push_back(scene::quadLightScene());
     _scenes.push_back(scene::cornelBoxScene());
@@ -228,6 +228,8 @@ void screen::launchPathTracer()
                 getDC(),
                 rectangle<int>(0, 0, _resultWidth, _resultHeight),
                 rectangle<int>(0, 0, _width, _height));
+            
+            bmp->save("result.bmp");
 
             delete bmp;
             delete pixelWriter;
@@ -236,7 +238,6 @@ void screen::launchPathTracer()
         }, test);
         
     });
-
     task.detach();
 }
 
@@ -296,7 +297,7 @@ void screen::writeInstructionsInConsole()
     console::writeLine("Left:   double resolution.");
     console::writeLine("Right:  halve resolution.");
     console::writeLine("Enter:  path trace.");
-    console::writeLine("[1..8]: chance scene.");
+    console::writeLine("[1..8]: change scene.");
     console::writeLine("ESC:    cancel.");
     console::writeLine("");
 }

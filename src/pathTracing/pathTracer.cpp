@@ -29,14 +29,14 @@ void pathTracer::setScene(scene* scene)
 vec3 pathTracer::li(const ray& r, int depth)
 {
     intersection hit;
-    bool anyHit = _scene->hit(r, 0.0001f, MAX_FLOAT, hit);
+    bool anyHit = _scene->hit(r, 0.001f, MAX_FLOAT, hit);
 
     if (anyHit)
     {
         ray scattered;
         vec3 attenuation;
         vec3 emitted = hit.material->emitted(hit.uv, hit.point);
-        if (depth < 5 && hit.material->scatter(r, hit, attenuation, scattered))
+        if (depth < 50 && hit.material->scatter(r, hit, attenuation, scattered))
             return emitted + attenuation *li(scattered, depth + 1);
         else
             return emitted;

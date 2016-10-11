@@ -1,6 +1,9 @@
 #include <iostream>
 #include "bitmap.h"
 #include "../stb/stb_image.h"
+//#define STBI_WRITE_NO_STDIO
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "../stb/stb_image_write.h"
 
 bitmap* bitmap::load(std::string fileName)
 {
@@ -119,7 +122,7 @@ void bitmap::stretchBlit(void * dc, rectangle<int> src, rectangle<int> dest)
 
 void bitmap::save(std::string fileName)
 {
-    //todo:implement save function
+    stbi_write_bmp(fileName.c_str(), width, height, 4, _data);
 }
 
 void bitmap::setPixel(uint x, uint y, float r, float g, float b)

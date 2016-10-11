@@ -7,7 +7,7 @@ emissive::emissive(texture* albedo) :
 {
 }
 
-bool emissive::scatter(const ray& r, const intersection& hit, glm::vec3& attenuation, ray& scattered) const
+bool emissive::scatter(const ray& r, const intersection& hit, vec3& attenuation, ray& scattered) const
 {
     return false;
 }

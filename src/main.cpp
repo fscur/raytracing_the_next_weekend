@@ -11,7 +11,7 @@ int main(int argc, char* args[])
 {
     application app;
 
-    auto mainScreen = new screen(L"", 800, 450);
+    auto mainScreen = new screen(L"", 1600, 900);
     app.run(mainScreen);
     delete mainScreen;
 
