@@ -471,11 +471,6 @@ scene* scene::poolScene()
     auto backGroundFunction = [](const ray& ray)
     {
         return vec3(0.0f, 1.0f, 10.0f) / 255.999f;
-        //return vec3(1.0);
-
-        /*vec3 dir = normalize(ray.direction);
-        float t = 0.5f * (dir.y + 1.0f);
-        return (1.0f - t) * vec3(1.0f) + t * vec3(0.2f, 0.5f, 0.7f);*/
     };
 
     vec3 eye(-4.0, 4.5, 12.17);
@@ -520,7 +515,6 @@ scene* scene::poolScene()
     {
         auto p1 = p0 + vec3(0.5f * random::next(), 0.0, 0.0f);
         return p0 + (t / speed) * (p1 - p0);
-        //return p0;
     };
 
     auto oneTexture = new imageTexture("one.png");
@@ -536,89 +530,6 @@ scene* scene::poolScene()
     world->buildBvh();
     return world;
 }
-
-//scene* scene::finalScene()
-//{
-//    auto backGroundFunction = [](const ray& ray)
-//    {
-//        /*vec3 dir = normalize(ray.direction);
-//        float t = 0.5f * (dir.y + 1.0f);
-//        return (1.0f - t) * vec3(1.0f) + t * vec3(0.2f, 0.5f, 0.7f);*/
-//
-//        return vec3(0.0);
-//    };
-//
-//    vec3 eye(478, 278, -600);
-//    vec3 at(278, 278, 0);
-//    float focusDistance = 10.0;
-//    float aperture = 0.0;
-//    float fov = 40 * (glm::pi<float>() / 180.0f);
-//
-//    auto cam = new camera(fov, 1.7778f, aperture, focusDistance, 1.0);
-//    cam->lookAt(eye, at, vec3(0.0f, 1.0f, 0.0f));
-//
-//    scene* world = new scene(cam, backGroundFunction);
-//
-//    material* white = new lambertian(new solidColor(vec3(0.73, 0.73, 0.73)));
-//    material* ground = new lambertian(new solidColor(vec3(0.48, 0.83, 0.53)));
-//
-//    /*int nb = 20;
-//    int b = 0;
-//
-//    for (int i = 0; i < nb; i++)
-//    {
-//        for (int j = 0; j < nb; j++)
-//        {
-//            float w = 100;
-//            float x0 = -1000 + i*w;
-//            float z0 = -1000 + j*w;
-//            float y0 = 0;
-//            float x1 = x0 + w;
-//            float y1 = 100 * (random::next() + 0.01);
-//            float z1 = z0 + w;
-//            world->addShape(new box(vec3(x0, y0, z0), vec3(x1, y1, z1), ground));
-//        }
-//    }*/
-//
-//    material* light = new emissive(new solidColor(vec3(7, 7, 7)));
-//    world->addShape(new zx_quad(rectangle<float>(147, 123, 265, 300), 554, light));
-//
-//    /*std::function<vec3(vec3, float, float)> movementFunc = [=](vec3 p0, float t, float speed)
-//    {
-//        auto p1 = p0 + vec3(30.0f, 0.0, 0.0f);
-//        return p0 + (t / speed) * (p1 - p0);
-//    };
-//
-//    vec3 center(400, 400, 200);
-//    world->addShape(new movingSphere(center, 50, 1.0f, new lambertian(new solidColor(vec3(0.7, 0.3, 0.1))), movementFunc));*/
-//    //world->addShape(new sphere(vec3(260, 150, 45), 50, new dielectric(1.5)));
-//    //world->addShape(new sphere(vec3(0, 150, 145), 50, new metal(new solidColor(vec3(0.8, 0.8, 0.9)), 10.0)));
-//
-//    /*shape* boundary = new sphere(vec3(360, 150, 145), 70, new dielectric(1.5));
-//    world->addShape(boundary);
-//    world->addShape(new constantMedium(boundary, 0.2, new solidColor(vec3(0.2, 0.4, 0.9))));*/
-//
-//    /*boundary = new sphere(vec3(0, 0, 0), 5000, new dielectric(1.5));
-//    world->addShape(new constantMedium(boundary, 0.0001, new solidColor(vec3(1.0, 1.0, 1.0))));
-//
-//    auto earthTexture = new imageTexture("earthmap.jpg");
-//    material* earthMaterial = new lambertian(earthTexture);
-//    world->addShape(new sphere(vec3(400, 200, 400), 100, earthMaterial));*/
-//
-//    texture* marbleMaterial = new marble(vec3(0.1f), vec3(1.0f));
-//    //world->addShape(new sphere(vec3(220, 280, 300), 80, new lambertian(marbleMaterial)));
-//    world->addShape(new sphere(vec3(278, 278, 0), 80, new lambertian(marbleMaterial)));
-//
-//
-//    /*int ns = 1000;
-//    for (int j = 0; j < ns; j++)
-//    {
-//        world->addShape(new translate(new rotateY(new sphere(vec3(165 * random::next(), 165 * random::next(), 165 * random::next()), 10, white), 15.0f), vec3(-100, 270, 395)));
-//    }*/
-//
-//    world->buildBvh();
-//    return world;
-//}
 
 scene::scene(camera* camera, std::function<vec3(const ray&)> getBackgroundFunction) :
     _camera(camera),
