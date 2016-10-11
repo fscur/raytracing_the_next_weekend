@@ -10,7 +10,7 @@ vec3 sampler::randomPositionInUnitSphere()
         float y = random::next();
         float z = random::next();
 
-        randomPosition = 2.0f * vec3(x, y, z) - vec3(1.0f);
+        randomPosition = 2.0f * vec3(x, y, z) - 1.0f;
 
     } while (dot(randomPosition, randomPosition) >= 1.0f);
 

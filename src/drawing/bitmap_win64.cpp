@@ -122,7 +122,22 @@ void bitmap::stretchBlit(void * dc, rectangle<int> src, rectangle<int> dest)
 
 void bitmap::save(std::string fileName)
 {
-    stbi_write_bmp(fileName.c_str(), width, height, 4, _data);
+    auto data = new byte[width * height * 4];
+
+    for (int i = 0; i < width; ++i)
+    {
+        for (int j = 0; j < height; ++j)
+        {
+            data[(j * width * 4) + (i * 4) + 0] = _data[((height - 1 - j) * width * 4) + (i * 4) + 2];
+            data[(j * width * 4) + (i * 4) + 1] = _data[((height - 1 - j) * width * 4) + (i * 4) + 1];
+            data[(j * width * 4) + (i * 4) + 2] = _data[((height - 1 - j) * width * 4) + (i * 4) + 0];
+            data[(j * width * 4) + (i * 4) + 3] = _data[((height - 1 - j) * width * 4) + (i * 4) + 3];
+        }
+    }
+
+    stbi_write_png(fileName.c_str(), width, height, 4, data, 0);
+
+    delete[] data;
 }
 
 void bitmap::setPixel(uint x, uint y, float r, float g, float b)

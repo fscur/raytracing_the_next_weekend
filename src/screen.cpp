@@ -12,7 +12,7 @@ screen::screen(std::wstring name, uint width, uint height) :
     MIN_SSP(1),
     MAX_SSP(32768),
     MIN_WIDTH(200),
-    MAX_WIDTH(1600),
+    MAX_WIDTH(800),
     TILE_WIDTH(32),
     TILE_HEIGHT(32),
     _processing(false),
@@ -176,7 +176,6 @@ void screen::launchPathTracer()
         _processing = false;
     }, test);*/
 
-    
     auto task = std::thread([&]
     {
         auto test = "[" +
@@ -228,8 +227,10 @@ void screen::launchPathTracer()
                 getDC(),
                 rectangle<int>(0, 0, _resultWidth, _resultHeight),
                 rectangle<int>(0, 0, _width, _height));
-            
-            bmp->save("result.bmp");
+
+            std::string fileName = "result.png";
+            bmp->save(fileName);
+            system(fileName.c_str());
 
             delete bmp;
             delete pixelWriter;

@@ -13,7 +13,7 @@ public:
         float shutterSpeed);
 
     void lookAt(vec3 eye, vec3 at, vec3 up);
-    ray castRay(vec2 uv, float time);
+    ray castRay(vec2 uv);
 
 private:
     float _fov;

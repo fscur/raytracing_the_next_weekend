@@ -23,13 +23,13 @@ camera::camera(
     _position = vec3(0.0f, 0.0f, 0.0f);
 }
 
-ray camera::castRay(vec2 uv, float time)
+ray camera::castRay(vec2 uv)
 {
     vec3 randomPositionInLens = _lensRadius * sampler::randomPositionInDisk();
     vec3 offset = _u * randomPositionInLens.x + _v * randomPositionInLens.y;
     vec3 castOrigin = _position + offset;
     vec3 castDirection = _lowerLeftCorner + uv.x * _horizontal + uv.y * _vertical - _position - offset;
-    float castTime = time + random::next() * _shutterSpeed;
+    float castTime = random::next() * _shutterSpeed;
     return ray(castOrigin, castDirection, castTime);
 }
 
