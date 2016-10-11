@@ -13,6 +13,7 @@ Controls:
 * Left:   double resolution.
 * Right:  halve resolution.
 * Enter:  path trace.
+* [1..8]: change scenes.
 * ESC:    cancel.
 
 Known Issues:
